@@ -68,6 +68,43 @@ fun main() {
         }
     }
 
+    "removing elements" example {
+        val list: MutableCollection<Int> = LinkedList()
+        list.add(3)
+        list.add(2)
+        list.add(1)
+
+        println(list)
+        list.remove(1)
+        println(list)
+    }
+
+    "retaining elements" example {
+        val list: MutableCollection<Int> = LinkedList()
+        list.add(3)
+        list.add(2)
+        list.add(1)
+        list.add(4)
+        list.add(5)
+
+        println(list)
+        list.retainAll(listOf(3, 4, 5))
+        println(list)
+    }
+
+    "remove all elements" example {
+        val list: MutableCollection<Int> = LinkedList()
+        list.add(3)
+        list.add(2)
+        list.add(1)
+        list.add(4)
+        list.add(5)
+
+        println(list)
+        list.removeAll(listOf(3, 4, 5))
+        println(list)
+    }
+
 }
 
 data class Node<T>(var value: T, var next: Node<T>? = null) {
@@ -80,7 +117,7 @@ data class Node<T>(var value: T, var next: Node<T>? = null) {
     }
 }
 
-class LinkedList<T> : Iterable<T> , Collection<T>{
+class LinkedList<T> : MutableIterable<T>, MutableCollection<T> {
 
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
@@ -197,34 +234,85 @@ class LinkedList<T> : Iterable<T> , Collection<T>{
         return result
     }
 
-    override fun iterator(): Iterator<T> {
+    override fun iterator(): MutableIterator<T> {
         return LinkedListIterator(this)
     }
 
     override fun contains(element: T): Boolean {
         //O(n)
-        for(item in this){
-            if(item == element) return true
+        for (item in this) {
+            if (item == element) return true
         }
         return false
     }
 
     override fun containsAll(elements: Collection<T>): Boolean {
         //O(n^2)
-      elements.forEach {
-          if(this.contains(it)) return true
-      }
+        elements.forEach {
+            if (this.contains(it)) return true
+        }
         return false
+    }
+
+    override fun add(element: T): Boolean {
+        append(element)
+        return true
+    }
+
+    override fun addAll(elements: Collection<T>): Boolean {
+        for (element in elements) {
+            append(element)
+        }
+        return true
+    }
+
+    override fun clear() {
+        head = null
+        tail = null
+        size = 0
+    }
+
+    override fun remove(element: T): Boolean {
+        val iterator = this.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (item == element) {
+                iterator.remove()
+                return true
+            }
+        }
+        return false
+    }
+
+    override fun removeAll(elements: Collection<T>): Boolean {
+        var result = false
+        for (item in elements) {
+            result = remove(item) || result
+        }
+        return result
+    }
+
+    //Keep those items only
+    override fun retainAll(elements: Collection<T>): Boolean {
+        var result = false
+        val iterator = this.iterator()
+        while (iterator.hasNext()) {
+            val item = iterator.next()
+            if (!elements.contains(item)) {
+                iterator.remove()
+                result = true
+            }
+        }
+        return result
     }
 
 }
 
-class LinkedListIterator<T>(private val list: LinkedList<T>) : Iterator<T> {
+class LinkedListIterator<T>(private val list: LinkedList<T>) : MutableIterator<T> {
     private var index = 0
     private var lastNode: Node<T>? = null
 
     override fun next(): T {
-        println("Debug: calling next on index $index")
         if (index >= list.size) throw IndexOutOfBoundsException()
         lastNode = if (index == 0) {
             list.nodeAt(0)
@@ -238,5 +326,17 @@ class LinkedListIterator<T>(private val list: LinkedList<T>) : Iterator<T> {
 
     override fun hasNext(): Boolean {
         return index < list.size
+    }
+
+    override fun remove() {
+        if (index == 1) {
+            list.pop()
+        } else {
+            //we do -2 because iterator next does an index++ before checking for has next again
+            val prevNode = list.nodeAt(index - 2) ?: return
+            list.removeAfter(prevNode)
+            lastNode = prevNode
+        }
+        index--
     }
 }
