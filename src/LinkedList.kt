@@ -80,13 +80,13 @@ data class Node<T>(var value: T, var next: Node<T>? = null) {
     }
 }
 
-class LinkedList<T> : Iterable<T> {
+class LinkedList<T> : Iterable<T> , Collection<T>{
 
     private var head: Node<T>? = null
     private var tail: Node<T>? = null
-    var size = 0
+    override var size = 0
 
-    private fun isEmpty(): Boolean {
+    override fun isEmpty(): Boolean {
         return size == 0
     }
 
@@ -199,6 +199,22 @@ class LinkedList<T> : Iterable<T> {
 
     override fun iterator(): Iterator<T> {
         return LinkedListIterator(this)
+    }
+
+    override fun contains(element: T): Boolean {
+        //O(n)
+        for(item in this){
+            if(item == element) return true
+        }
+        return false
+    }
+
+    override fun containsAll(elements: Collection<T>): Boolean {
+        //O(n^2)
+      elements.forEach {
+          if(this.contains(it)) return true
+      }
+        return false
     }
 
 }
