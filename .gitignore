@@ -1,2 +1,5 @@
 *.class
 *.kotlin_module
+/lib
+/out
+/.idea
