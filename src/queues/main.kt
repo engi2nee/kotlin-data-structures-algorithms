@@ -60,4 +60,25 @@ fun main() {
         println(queue)
         println("Next up: ${queue.peek()}")
     }
+
+    "Boardgame manager with Queue" example {
+        val queue = ArrayListQueue<String>().apply {
+            enqueue("Vincent")
+            enqueue("Remel")
+            enqueue("Lukiih")
+            enqueue("Allison")
+        }
+        println(queue)
+
+        println("===== boardgame =======")
+        queue.nextPlayer()
+        println(queue)
+        queue.nextPlayer()
+        println(queue)
+        queue.nextPlayer()
+        println(queue)
+        queue.nextPlayer()
+        println(queue)
+    }
+
 }
