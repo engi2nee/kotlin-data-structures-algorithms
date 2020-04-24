@@ -58,5 +58,35 @@ fun main() {
         println(newTree)
     }
 
+    val exampleBinaryTree = BinarySearchTree<Int>()
+    "Binary Search Tree building a BST" example {
+        exampleBinaryTree.apply {
+            insert(3)
+            insert(1)
+            insert(4)
+            insert(0)
+            insert(2)
+            insert(5)
+        }
+        println(exampleBinaryTree)
+
+    }
+    "Binary Search Tree Finding a node" example {
+        if (exampleBinaryTree.contains(5)) {
+            println("Found 5!")
+        } else {
+            println("Couldn't find 5")
+        }
+    }
+
+    "Binary Search Tree removing a node" example {
+        println("Tree before removal:")
+        println(exampleBinaryTree)
+        exampleBinaryTree.remove(3)
+        println("Tree after removing root:")
+        println(
+            exampleBinaryTree
+        )
+    }
 
 }
