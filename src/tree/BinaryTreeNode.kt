@@ -1,5 +1,7 @@
 package tree
 
+import com.sun.org.apache.xpath.internal.operations.Bool
+
 typealias BinaryVisitor<T> = (T) -> Unit
 
 class BinaryNode<T>(var value: T) {
@@ -61,7 +63,18 @@ class BinaryNode<T>(var value: T) {
         rightChild?.traversePreOrderWithNull(visit) ?: visit(null)
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other != null && other is BinaryNode<*>) {
+            this.value == other.value &&
+                    this.leftChild == other.leftChild &&
+                    this.rightChild == other.rightChild
+        } else {
+            false
+        }
+    }
+
 }
+
 
 fun makeBinaryTree():BinaryNode<Int> {
     val zero = BinaryNode(0)

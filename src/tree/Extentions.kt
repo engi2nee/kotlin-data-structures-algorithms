@@ -1,5 +1,6 @@
 package tree
 
+import com.sun.source.tree.BinaryTree
 import queues.ArrayListQueue
 import kotlin.math.max
 
@@ -46,4 +47,20 @@ fun <T> BinaryNode<T>.deserialize(list: MutableList<T?>): BinaryNode<T?>? {
     root.leftChild = deserialize(list)
     root.rightChild = deserialize(list)
     return root
+}
+
+fun <T : Comparable<T>> BinaryNode<T>.isBinarySearchTree(): Boolean{
+    return isBST(this, min = null, max = null)
+}
+
+fun <T> BinaryNode<T>.isBST(tree: BinaryNode<T>?, min: T?, max: T?): Boolean
+        where T : Comparable<T>{
+
+    tree ?: return true
+    if (min != null && tree.value <= min) {
+        return false
+    } else if (max != null && tree.value > max) {
+        return false
+    }
+    return isBST(tree.leftChild, min, tree.value) && isBST(tree.rightChild, tree.value, max)
 }

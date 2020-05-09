@@ -89,4 +89,11 @@ fun main() {
         )
     }
 
+    "Check if binary search tree" example {
+        println(
+            exampleBinaryTree
+        )
+        println(binaryTree.isBinarySearchTree())
+    }
+
 }
