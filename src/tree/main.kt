@@ -96,4 +96,20 @@ fun main() {
         println(binaryTree.isBinarySearchTree())
     }
 
+    "AVL, repeated insertions in sequence" example {
+        val avlTree = AVL<Int>()
+
+        (0..10).forEach {
+            avlTree.insert(it)
+        }
+        avlTree.insert(15)
+        avlTree.insert(11)
+        avlTree.insert(16)
+        avlTree.insert(18)
+        println(avlTree)
+        avlTree.remove(10)
+        println(avlTree)
+    }
+
+
 }

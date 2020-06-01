@@ -6,6 +6,15 @@ class AVLBinaryNode<T>(var value: T) {
     var rightChild: AVLBinaryNode<T>? = null
     val min: AVLBinaryNode<T>?
         get() = leftChild?.min ?: this
+    var height = 0
+    val leftHeight : Int
+        get() = leftChild?.height ?: -1
+
+    val rightHeight : Int
+        get() = rightChild?.height ?: -1
+
+    val balanceFactor : Int
+        get() = leftHeight - rightHeight
 
     override fun toString() = diagram(this)
 
