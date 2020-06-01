@@ -55,7 +55,7 @@ fun <T : Comparable<T>> BinaryNode<T>.isBinarySearchTree(): Boolean{
 
 fun <T> BinaryNode<T>.isBST(tree: BinaryNode<T>?, min: T?, max: T?): Boolean
         where T : Comparable<T>{
-
+    println("Tree Node is : ${tree?.value} and min= $min, max=$max")
     tree ?: return true
     if (min != null && tree.value <= min) {
         return false

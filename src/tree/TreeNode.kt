@@ -15,6 +15,7 @@ class TreeNode<T>(val value: T) {
         visit(this)
         //do same recursively fro all children
         children.forEach {
+            println("calling for child ${it.value}")
             it.forEachDepthFirst(visit)
         }
     }
